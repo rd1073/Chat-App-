@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const { User } = require("../db");
 const generateToken = require("../token");
 const express = require("express");
+const bcrypt = require("bcrypt");
 
 
 /*
@@ -113,11 +114,13 @@ const registerUser = async (req, res) => {
         return;
       }
   
+      const hashedPassword = await bcrypt.hash(password, 10);
+
       // Create a new user instance
       const newUser = new User({
         name,
         phno,
-        password,
+        password:hashedPassword,
       });
   
       // Save the user instance to the database
