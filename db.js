@@ -13,21 +13,20 @@ conn.on('error', (err) => {
 const userSchema = new mongoose.Schema(
     {
       name: { type: "String", required: true },
-      phno: { type: "String", unique: true, required: true },
-      password: { type: "String", required: true },
+      phno: { type: "String",  unique: true, required: true},
+      password: { type: "String", required: true},
       isAdmin: {
         type: Boolean,
         required: true,
         default: false,
       },
     },
-    { timestaps: true }
+    { timestamps: true }
   );
   
 const User = conn.model("User", userSchema);
   
-  module.exports = User;
-
+ 
 
   //chat module
 const chatModel = new mongoose.Schema(
@@ -43,8 +42,7 @@ const chatModel = new mongoose.Schema(
   
   const Chat = conn.model("Chat", chatModel);
   
-  module.exports = Chat;
-
+ 
  
   //messages module
 const messageSchema = new mongoose.Schema(
@@ -58,5 +56,6 @@ const messageSchema = new mongoose.Schema(
 );
 
 const Message = conn.model("Message", messageSchema);
-module.exports = Message; 
+ 
+module.exports = { User, Chat, Message };
 
