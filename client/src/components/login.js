@@ -1,15 +1,46 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [phno, setPhno] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
-
+ 
   const handleClick = () => setShow(!show);
 
-  const submitHandler = () => {
-    // Your logic for handling the login
+  const submitHandler = async () => {
+    if (!phno || !password) {
+      console.log("please fill all the fields");
+       return;
+    }
+
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.post(
+        "http://localhost:5000/api/user/login",
+        {
+        
+          phno,
+          password,
+          
+        },
+        config
+      );
+      console.log(data);
+      console.log("login succesfull");
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      
+      navigate('/chat');
+    } catch (error) {
+      console.log(error);
+     }
   };
 
   return (
