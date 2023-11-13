@@ -16,7 +16,7 @@ app.use(
       // <-- location of the react app were connecting to
       credentials: true,
     })
-  );
+  ); 
 
 app.use("/api/user", userRoutes);
 

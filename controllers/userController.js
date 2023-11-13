@@ -1,99 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const { User } = require("../db");
 const generateToken = require("../token");
-const express = require("express");
-const bcrypt = require("bcrypt");
+ const bcrypt = require("bcrypt");
 
-
-/*
-const registerUser = asyncHandler(async (req, res) => {
-    const { name, phno, password} = req.body;
   
-    if (!name || !phno || !password) {
-      res.status(400);
-      throw new Error("Please Enter all the Feilds");
-    }
-  
-    const userExists = await User.findOne({ phno });
-  
-    if (userExists) {
-      res.status(400);
-      throw new Error("User already exists");
-    }
-  
-    const user = await User.create({
-      name,
-      phno,
-      password,
-      
-    });
-  
-    const newUser = new User({
-        name,
-        phno,
-        password,
-      });
-    
-      // Save the user instance to the database
-      const user = await newUser.save();
-
-
-    if (user) {
-      res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        phno: user.phno,
-        token: generateToken(user._id),
-
-        
-        
-      });
-    } else {
-      res.status(400);
-      throw new Error("User not found");
-    }
-  });
-*/
-/*
-const registerUser = async (req, res) => {
-    try {
-      const { name, phno, password } = req.body;
-  
-      if (!name || !phno || !password) {
-        res.status(400);
-        throw new Error("Please Enter all the Fields");
-        return;
-
-      }
-  
-      User.findOne({ phno }).then((doc) => {
-        if (doc) {
-          res.status(400);
-          throw new Error("User already exists");
-        } else {
-          const newUser = new User({
-            name,
-            phno,
-            password,
-          });
-  
-          newUser.save().then((user) => {
-            res.status(201).json({
-              _id: user._id,
-              name: user.name,
-              phno: user.phno,
-              token: generateToken(user._id),
-            });
-          });
-        }
-      });
-    } catch (err) {
-      res.status(500).send("Server error probably");
-    }
-  };
-  
-  module.exports = { registerUser };
-  */
 
   const registerUser = async (req, res) => {
     try {
@@ -149,7 +59,7 @@ const registerUser = async (req, res) => {
       if (!phno || !password) {
         res.status(400).json({ error: "Please Enter all the Fields" });
         return;
-      }
+      } 
   
       // Check if user already exists
       const user = await User.findOne({ phno });
@@ -172,10 +82,21 @@ const registerUser = async (req, res) => {
         console.error(err);
         res.status(500).json({ error: "Server error probably" });
 }};
-      
-  
 
-  module.exports = { registerUser, loginUser };
+
+const searchUser = async (req, res, next) => {
+    const keyword = req.query.search
+    ? { phno: { $regex: req.query.search, $options: "i" }, _id: { $ne: req.user._id } }
+    : { _id: { $ne: req.user._id } };
+    
+  const users = await User.find(keyword);
+  console.log("found user")
+  res.send(users);
+} 
+      
+   
+
+  module.exports = { registerUser, loginUser, searchUser };
   
   
   
