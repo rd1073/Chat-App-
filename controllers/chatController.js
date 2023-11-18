@@ -251,9 +251,40 @@ const renameGroup = async (req, res) => {
   }
 };
 
+const addToGroup = async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    // check if the requester is admin (You may need to implement this check)
+
+    const added = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $push: { users: userId },
+      },
+      {
+        new: true,
+      }
+    )
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!added) {
+      res.status(404).json({ message: "Chat Not Found" });
+    } else {
+      res.json(added);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 
 
 
 
-module.exports = { accessChat, fetchChats, createGroupChat, renameGroup };
+
+
+
+
+module.exports = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup };
