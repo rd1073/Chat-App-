@@ -279,6 +279,33 @@ const addToGroup = async (req, res) => {
   }
 };
 
+const removeFromGroup = async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    // check if the requester is admin (You may need to implement this check)
+
+    const removed = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $pull: { users: userId },
+      },
+      {
+        new: true,
+      }
+    )
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!removed) {
+      res.status(404).json({ message: "Chat Not Found" });
+    } else {
+      res.json(removed);
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 
 
@@ -287,4 +314,8 @@ const addToGroup = async (req, res) => {
 
 
 
-module.exports = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup };
+
+
+
+
+module.exports = { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup };

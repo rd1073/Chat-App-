@@ -1,5 +1,5 @@
 const express = require("express")
-const { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup }=require("../controllers/chatController");
+const { accessChat, fetchChats, createGroupChat, renameGroup, addToGroup, removeFromGroup }=require("../controllers/chatController");
 const protect=require("../protect");
 
 
@@ -10,8 +10,7 @@ router.route("/fetch").get(protect, fetchChats);
 router.route("/group").post(protect, createGroupChat);
 router.route("/rename").put(protect, renameGroup);
 router.route("/groupadd").put(protect, addToGroup);
-
-//router.route("/groupremove").put(protect, removeFromGroup);
+router.route("/groupremove").put(protect, removeFromGroup);
 
  
 
