@@ -4,7 +4,8 @@ const generateToken = require("../token");
  const bcrypt = require("bcrypt");
 
   
-
+//register user
+//api route api/user/login
   const registerUser = async (req, res) => {
     try {
       const { name, phno, password } = req.body;
@@ -50,6 +51,9 @@ const generateToken = require("../token");
     }
   };
   
+
+  //login user
+  //api route api/user/login
   const loginUser = async (req, res) => {
     try {
       const { phno, password } = req.body;
@@ -83,7 +87,8 @@ const generateToken = require("../token");
         res.status(500).json({ error: "Server error probably" });
 }};
 
-
+//search user
+// api route api/user/search
 const searchUser = async (req, res, next) => {
     const keyword = req.query.search
     ? { phno: { $regex: req.query.search, $options: "i" }, _id: { $ne: req.user._id } }
