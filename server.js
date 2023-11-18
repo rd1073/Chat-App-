@@ -3,6 +3,8 @@ const cors = require("cors");
 
 const mongoose = require("mongoose")
 const userRoutes=require("./routes/userRoutes")
+const chatRoutes=require("./routes/chatRoutes")
+
 const { User, Message, Chat }=require("./db")
 const path = require("path");
 
@@ -19,5 +21,7 @@ app.use(
   ); 
 
 app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
+
 
 app.listen(5000,console.log(`Server running on 5000`));
