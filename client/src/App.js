@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from "./components/login";
 import Signup from "./components/signup";
-import Chats from "./components/chat";
+import Chat from "./pages/chat";
  
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/chat" element={<Chats />} />
+            <Route path="/chat" element={<Chat />} />
 
  
  
